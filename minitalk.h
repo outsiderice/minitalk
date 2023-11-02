@@ -6,7 +6,7 @@
 /*   By: amagnell <amagnell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 13:10:34 by amagnell          #+#    #+#             */
-/*   Updated: 2023/10/23 22:44:40 by amagnell         ###   ########.fr       */
+/*   Updated: 2023/10/28 19:55:48 by amagnell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include <sys/types.h>
 # include "libft/libft.h"
 
-int     get_int(int signum, int bit_pos, int num);
-void     get_string(int signum, unsigned char *str, int bit_count);
-void    end_transmission(char *str, int *bit_count, int *len, int *client_pid);
+int		get_len(int signum, int pos, int num);
+void	get_string(int signum, unsigned char *str, int len);
+void	end_transmission(unsigned char *str, int *bit_count, int *len);
 
 #endif
