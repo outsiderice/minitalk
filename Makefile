@@ -6,49 +6,68 @@
 #    By: amagnell <amagnell@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/13 12:42:40 by amagnell          #+#    #+#              #
-#    Updated: 2023/10/24 20:11:13 by amagnell         ###   ########.fr        #
+#    Updated: 2024/09/04 14:33:04 by amagnell         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = client
-NAME2 = server
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -MMD
-INCLUDE = minitalk.h
-LIBFT = libft/libft.a
-SOURCES = client.c
-SOURCES2 = server.c
-OBJECTS = $(SOURCES:.c=.o)
+#------------TARGET---------------#
+NAME 		= client
+NAME2 		= server
 
-OBJECTS2 = $(SOURCES2:.c=.o)
+#------------LIBRARIES------------#
+LIBS		= ft
+LIBFT_DIR	= libft/
+INCLUDE 	= minitalk.h libft/libft.h 
+LIBFT 		= libft/libft.a
 
-DEP = $(SOURCES:.c=.d)
+#------------FILES----------------#
+SOURCES		= client.c
+SOURCES2	= server.c
 
-DEP2 = $(SOURCES2:.c=.d)
+#------------OBJS & DEPS----------#
+OBJECTS 	= $(SOURCES:.c=.o)
+OBJECTS2	= $(SOURCES2:.c=.o)
 
-all : $(LIBFT) $(NAME) $(NAME2)
+DEP			= $(SOURCES:.c=.d)
+DEP2		= $(SOURCES2:.c=.d)
 
-%.o: %.c Makefile
-	$(CC) $(CFLAGS) -c $< -o $@
+#------------CC-------------------#
+CC 			= cc
+CFLAGS 		= -Wall -Wextra -Werror -fsanitize=address
+CPPFLAGS	= $(addprefix -I, $(INCLUDE)) -MMD -MP
+LDFLAGS		= $(addprefix -L, $(dir $(LIBFT)))
+LDLIBS		= $(addprefix -l, $(libs))
 
-$(LIBFT) : 
-	make -C libft
+#------------COMMANDS-------------#
+RM			= rm -rf
+MAKEFLAGS 	+= --no-print-directory
+	
+#------------RULES----------------#
+all : libft $(NAME) $(NAME2)
 
--include $(DEP) $(DEP2)
 $(NAME) : $(OBJECTS) $(LIBFT)
-	$(CC) $(CFLAGS) $^ -o $(NAME)
+	$(CC) $(LDFLAGS) $(OBJECTS) $(LDLIBS) -o $(NAME)
 
 $(NAME2) : $(OBJECTS2) $(LIBFT)
-	$(CC) $(CFLAGS) $^ -o $(NAME2)
+	$(CC) $(LDFLAGS) $(OBJECTS2) $(LDLIBS) -o $(NAME2)
 
-fclean : clean
-	rm -f $(NAME) $(NAME2)
-	make -C libft fclean
+libft : 
+	@make $(MAKEFLAGS) -C $(LIBFT_DIR)
+
+%.o: %.c Makefile
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+-include $(DEP) $(DEP2)
 
 clean :
-	rm -f $(OBJECTS) $(OBJECTS2) $(DEP) $(DEP2)
-	make -C libft clean
+	$(RM) $(OBJECTS) $(OBJECTS2) $(DEP) $(DEP2)
+	@make  clean -C $(LIBFT_DIR)
+
+fclean : clean
+	$(RM) $(NAME) $(NAME2)
+	@make fclean -C $(LIBFT_DIR)
 
 re : fclean all
 
-.PHONY: all re clean fclean
+.PHONY: all re clean fclean libft
+.SILENT:
