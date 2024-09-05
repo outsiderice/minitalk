@@ -6,7 +6,7 @@
 #    By: amagnell <amagnell@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/13 12:42:40 by amagnell          #+#    #+#              #
-#    Updated: 2024/09/04 14:33:04 by amagnell         ###   ########.fr        #
+#    Updated: 2024/09/05 09:00:18 by amagnell         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ CC 			= cc
 CFLAGS 		= -Wall -Wextra -Werror -fsanitize=address
 CPPFLAGS	= $(addprefix -I, $(INCLUDE)) -MMD -MP
 LDFLAGS		= $(addprefix -L, $(dir $(LIBFT)))
-LDLIBS		= $(addprefix -l, $(libs))
+LDLIBS		= $(addprefix -l, $(LIBS))
 
 #------------COMMANDS-------------#
 RM			= rm -rf
@@ -45,10 +45,10 @@ MAKEFLAGS 	+= --no-print-directory
 #------------RULES----------------#
 all : libft $(NAME) $(NAME2)
 
-$(NAME) : $(OBJECTS) $(LIBFT)
+$(NAME) : $(LIBFT) $(OBJECTS)
 	$(CC) $(LDFLAGS) $(OBJECTS) $(LDLIBS) -o $(NAME)
 
-$(NAME2) : $(OBJECTS2) $(LIBFT)
+$(NAME2) : $(LIBFT) $(OBJECTS2)
 	$(CC) $(LDFLAGS) $(OBJECTS2) $(LDLIBS) -o $(NAME2)
 
 libft : 
@@ -61,7 +61,7 @@ libft :
 
 clean :
 	$(RM) $(OBJECTS) $(OBJECTS2) $(DEP) $(DEP2)
-	@make  clean -C $(LIBFT_DIR)
+	@make clean -C $(LIBFT_DIR)
 
 fclean : clean
 	$(RM) $(NAME) $(NAME2)

@@ -1,25 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amagnell <amagnell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/13 13:10:34 by amagnell          #+#    #+#             */
-/*   Updated: 2024/09/05 10:26:02 by amagnell         ###   ########.fr       */
+/*   Created: 2023/06/18 14:07:25 by amagnell          #+#    #+#             */
+/*   Updated: 2024/09/05 10:25:05 by amagnell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
-# include <unistd.h>
-# include <stdlib.h>
-# include <signal.h>
-# include <sys/types.h>
-# include "libft/libft.h"
+#include "libft.h"
 
-int		get_len(int signum, int pos, int num);
-void	get_string(int signum, unsigned char *str, int len);
-void	end_transmission(unsigned char *str, int *bit_count, int *len);
+int	ft_putstr(const char *str)
+{
+	int	j;
+	int	count;
 
-#endif
+	j = 0;
+	count = 0;
+	if (str == NULL)
+		return (write(1, "(null)", 6));
+	while (str[j] != '\0')
+	{
+		count = count + ft_putchar(str[j]);
+		if (count == -1)
+			return (-1);
+		j++;
+	}
+	return (count);
+}
