@@ -6,7 +6,7 @@
 #    By: amagnell <amagnell@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/13 12:42:40 by amagnell          #+#    #+#              #
-#    Updated: 2024/09/05 10:30:21 by amagnell         ###   ########.fr        #
+#    Updated: 2024/09/05 10:33:00 by amagnell         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ DEP2		= $(SOURCES2:.c=.d)
 
 #------------CC-------------------#
 CC 			= cc
-CFLAGS 		= -Wall -Wextra -Werror #-fsanitize=address
+CFLAGS 		= -Wall -Wextra -Werror -fsanitize=address
 CPPFLAGS	= $(addprefix -I, $(INCLUDE)) -MMD -MP
 LDFLAGS		= $(addprefix -L, $(dir $(LIBFT)))
 LDLIBS		= $(addprefix -l, $(LIBS))
@@ -46,11 +46,11 @@ MAKEFLAGS 	+= --no-print-directory
 all : libft $(NAME) $(NAME2)
 
 $(NAME) : $(LIBFT) $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) $(LDLIBS) -o $(NAME)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJECTS) $(LDLIBS) -o $(NAME)
 	@echo "$(NAME) compiled!"
 
 $(NAME2) : $(LIBFT) $(OBJECTS2)
-	$(CC) $(LDFLAGS) $(OBJECTS2) $(LDLIBS) -o $(NAME2)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJECTS2) $(LDLIBS) -o $(NAME2)
 	@echo "$(NAME2) compiled!"
 
 libft : 
