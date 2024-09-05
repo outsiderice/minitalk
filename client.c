@@ -6,11 +6,17 @@
 /*   By: amagnell <amagnell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 13:15:00 by amagnell          #+#    #+#             */
-/*   Updated: 2023/10/28 19:40:50 by amagnell         ###   ########.fr       */
+/*   Updated: 2024/09/05 10:43:58 by amagnell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
+
+void	received(int	signal)
+{
+	if (signal == SIGUSR1)
+		printf("Server received message!\n");
+}
 
 void	send_string(char *str, int pid)
 {
@@ -64,19 +70,20 @@ void	send_int(unsigned int n, int pid)
 
 int	main(int argc, char **argv)
 {
+	struct	sigaction	sa;
 	pid_t	pid;
 
 	if (argc != 3)
 		return (write(1, "pass two arguments\n", 19));
-	ft_printf("number of arguments right\n");
+	sa.sa_handler = received;
+	sa.sa_flags = 0;
 	pid = ft_atoi(argv[1]);
 	if (pid == 0)
 		return (write(1, "wrong pid\n", 10));
-	ft_printf("pid passed correct\n");
 	send_int(ft_strlen(argv[2]), pid);
-	ft_printf("len sent\n");
 	send_string(argv[2], pid);
-	ft_printf("string sent\n");
+	if (sigaction(SIGUSR1, &sa, NULL) == -1)
+		return (write(2, "sigaction error\n"));
 	usleep(100);
 	return (0);
 }
